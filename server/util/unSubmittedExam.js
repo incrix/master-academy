@@ -126,39 +126,6 @@ exports.unSubmit = async (examID) => {
         }
         await examInfo.save();
 
-        // institute
-
-        // const batch = await Batch.findOne({ _id: examInfo.batchID });
-        // const student = batch.studentList.filter(
-        //   (task) => task.userID.valueOf() == get[i].id.valueOf()
-        // );
-
-        // let examMark = get[i].mark - get[i].negativeMark;
-        // if (examMark < 0) examMark = 0;
-
-        // batch.scheduleTest.map((task) => {
-        //   if (task.examID.valueOf() == examID.valueOf()) {
-        //     task.studentPerformance.push({
-        //       name: student[0].name,
-        //       rollNumber: student[0].rollNumber,
-        //       dept: student[0].dept,
-        //       email: student[0].email,
-        //       mark: examMark,
-        //     });
-        //   }
-        // });
-
-        // await batch.save();
-
-        // const getSession = await Session.findOne({
-        //   "session.userID": get[i].id,
-        // });
-       
-        // if (getSession) {
-        //   delete getSession.session.examID;
-        //   await getSession.save();
-        // }
-
         examState
           .deleteOne({ examID, userID: get[i].id })
           .then(function () {
@@ -177,32 +144,3 @@ exports.unSubmit = async (examID) => {
 };
 
 
-exports.sendDateStudent = async (batch,isCheckStudent,mark,negativeMark,userID,examID) => {
-  try {
-    
-   // const batch = await Batch.findOne({ _id: batchID });
-    const student = batch.studentList.filter(
-      (task) => task.userID.valueOf() == userID.valueOf()
-    );
-    let examMark = mark - negativeMark;
-    if (examMark < 0) examMark = 0;
-
-    batch.scheduleTest.map((task) => {
-      if (task.examID.valueOf() == examID.valueOf()) {
-     if(!isCheckStudent.includes(student[0].email))
-        task.studentPerformance.push({
-          name: student[0].name,
-          rollNumber: student[0].rollNumber,
-          dept: student[0].dept,
-          email: student[0].email,
-          mark: examMark,
-        });
-      }
-    });
-
-    await batch.save();
-    return batch
-  } catch (error) {
-    throw error
-  }
-}

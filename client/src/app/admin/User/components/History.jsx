@@ -7,13 +7,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button, Stack } from "@mui/material";
-import axios from 'axios'
-import download from 'js-file-download';
+
 import "../../../../App.css";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import DeleteExam from "./deleteExam";
-
+import LoadingButton from "@mui/lab/LoadingButton";
+import registerStudentPerformance from '../../../../util/registerStudentPerformance'
+import DownloadExcelSheet from '../../../../util/downloadExcel'
 export default function History({ history,Notificate ,setCall,isCall }) {
 
   return (
@@ -42,6 +43,7 @@ export default function History({ history,Notificate ,setCall,isCall }) {
 
 function List({ task ,Notificate, setCall,isCall}) {
   const { search } = useLocation();
+  const [isLoadExcel,setLoadExcel] = useState([])
   const [showPdfPage, setShowPdfPage] = useState({
     show: false,
     roll: "",
@@ -49,16 +51,46 @@ function List({ task ,Notificate, setCall,isCall}) {
   });
 
   const batchID = search.split("=")[1];
-  const handleDownload = (examID) => {
-    axios
-      .get("/api/institution/download", {
-        headers: { examid: examID, batchid: batchID },
-        responseType: "blob",
+
+  const handleDownload = async (examID) => {
+    setLoadExcel((preValue) => {
+      const getValue = [...preValue]
+      getValue.push(examID.valueOf())
+      return getValue
+    })
+    fetch("/api/institution/getDownloadList", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ examID, batchID }),
+    })
+      .then((res) => res.json())
+      .then(async(data) => {
+        if (data.status == "success" && data.getDownload == 'pending') {
+        const getStatus = await registerStudentPerformance({examInfo:data.examInfo,list:data.list,batch:data.batch,roll:'admin'})
+
+        if(getStatus == 'success') {
+          setLoadExcel((preValue) => {
+            const getValue = [...preValue]    
+            return [...getValue.filter(task => task !== examID)]
+          })
+        }
+        }
+        if(data.status == "success" && data.getDownload == 'complete') {
+          const getStatus = await  DownloadExcelSheet({examInfo:data.examInfo,list:data.list.studentPerformance})
+        
+          if(getStatus == 'success') {
+            setLoadExcel((preValue) => {
+              const getValue = [...preValue]    
+              return [...getValue.filter(task => task !== examID.valueOf())]
+            })
+          }
+        }
+
       })
-      .then((response) => {
-        download(response.data, response.headers.filename);
-      });
   };
+
 
   const handleExamDownload = (examID) => {
   
@@ -206,7 +238,7 @@ function List({ task ,Notificate, setCall,isCall}) {
                         task[task.length-(1+index)].examStartTime.split(":")[1]}{" "}
                       pm{" "}
                     </p>
-                  )}{""}
+                  )}{" "}
                   <p
                     style={{
                       fontWeight: 700,
@@ -250,21 +282,35 @@ function List({ task ,Notificate, setCall,isCall}) {
                   )}
                 </TableCell>
                 <TableCell align="center">
-                  {task[task.length-(1+index)].status == "complete" ? (
-                    <Button
-                      style={{ background: "#187163", color: "white" }}
-                      onClick={() => handleDownload(task[task.length-(1+index)].examID)}
-                    >
-                      Download
-                    </Button>
-                  ) : (
-                    <Button
-                      style={{ background: "#787486", color: "white" }}
-                      disabled
-                    >
-                      Download
-                    </Button>
-                  )}
+                {task[task.length - (1 + index)].status == "complete" ? (
+                    
+                    isLoadExcel.indexOf(task[task.length - (1 + index)].examID.valueOf()) !== -1 ?
+                    <LoadingButton
+                    loading
+                    sx={{
+                    width:'110px',
+                      height: "36px",
+                      backgroundColor: "#187163",
+                      "& .MuiCircularProgress-root": { color: "white" },
+                    }}
+                    /> :
+                                    <Button
+                                      style={{ background: "#187163", color: "white",  width:'110px', }}
+                                      onClick={() =>
+                                        handleDownload(task[task.length - (1 + index)].examID)
+                                      }
+                                    >
+                                      Download
+                                    </Button>
+                                  
+                                  ) : (
+                                    <Button
+                                      style={{ background: "#787486", color: "white" }}
+                                      disabled
+                                    >
+                                      Download
+                                    </Button>
+                                  )}
                 </TableCell >
                 <TableCell align="center">
                      <DeleteExam Notificate={Notificate} examID={task[task.length-(1+index)].examID} examName={task[task.length-(1+index)].name} setCall={setCall} isCall={isCall}  />

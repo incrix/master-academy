@@ -722,9 +722,12 @@ exports.submitExam = async (req, res, next) => {
             });
 
             if (rank) {
+             
               let mark = get[0].mark - get[0].negativeMark;
-              if (mark < 0) mark = 0;
-              rank.mark = mark;
+              if (mark < 0){ mark = 0;}
+           
+              if(rank.mark < mark ) {rank.mark = mark;}
+           
               await rank.save();
             } else {
               let mark = get[0].mark - get[0].negativeMark;
@@ -865,8 +868,8 @@ exports.submitExam = async (req, res, next) => {
           });
           if (rank) {
             let mark = get[0].mark - get[0].negativeMark;
-            if (mark < 0) mark = 0;
-            rank.mark = mark;
+            if (mark < 0 ) mark = 0;
+            if(rank.mark < mark ) rank.mark = mark;
             await rank.save();
           } else {
             let mark = get[0].mark - get[0].negativeMark;

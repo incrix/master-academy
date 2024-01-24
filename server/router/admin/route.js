@@ -60,14 +60,13 @@ const {
   createScheduleExam,
 } = require("../../controller/admin/exam/createExam.js");
 
-const {downloadList,examDownload} = require("../../controller/admin/institute/downloadList.js")
+const {examDownload,getDownloadList,saveToBatch} = require("../../controller/admin/institute/downloadList.js")
 //GET
 
 //reWriteModules
 const {clearAvatarAndHistory} = require("../../util/reWriteModule.js")
 
-//downloadList 
-router.get('/download',downloadList)
+//download PDF
 router.get('/examDownload/*',examDownload)
 
 
@@ -92,7 +91,12 @@ router.get("/getInstitution", getInstitutions);
 router.get("/getInstitute", getInstituteName);
 router.get("/getTeacher", getTeacher);
 router.get("/getUserDetails",getUserDetails)
+
 // POST
+
+//Download Excel
+router.post('/getDownloadList',getDownloadList)
+router.post('/saveToBatch',saveToBatch)
 
 router.post("/question", Get);
 router.post("/getBankName", getBankName);

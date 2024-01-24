@@ -22,7 +22,7 @@ exports.login = async (req, res, next) => {
   const hash = sha256Hasher.update(password).digest("hex");
   const check = await User.findOne({ email: req.body.email,password: hash });
   if (check) {
-    console.log(check);
+ 
     if(check.action == true) {
       return res.json({ status: "error", message: "Your Account Has Been Blocked" });
     }
