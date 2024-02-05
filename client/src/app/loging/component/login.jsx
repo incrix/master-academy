@@ -122,6 +122,7 @@ const handleMouseDownPassword = (event) => {
           <label htmlFor="">Email</label>
           <Input
               type="text"
+              name="Email"
                 placeholder="Enter your email"
                 onChange={(e) =>
                   setDetails((preValue) => {
@@ -140,6 +141,7 @@ const handleMouseDownPassword = (event) => {
         <Stack direction="column" spacing="10px">
           <label htmlFor=""> Password</label>
             <Input
+            name="Password"
               placeholder="Enter your password"
                 type={values.showPassword ? "text" : "password"}
                 onChange={(e) =>

@@ -57,17 +57,20 @@ exports.TotalPaymentAndExam =async (currentYear, month) => {
     try {
         const countYear = await getYears(currentYear);
         let option = [];
+ 
         const getMonthAndYear = [];
         for (let i = 0; i < countYear.length; i++) {
           option.push({ year: countYear[i], totalExam: '' ,totalPayment:''});
           let count = countYear[i] == currentYear ? eval(month) + 1 : 12;
+         
           for (let j = 0; j < count; j++) {
             const getDate = await analiysticsTime(countYear[i], j + 1, "02");
             getMonthAndYear.push(getDate);
           }
         }
+  
         option = await getPaymentAnalysisTotal(getMonthAndYear,countYear,option);
-        option = await getExamAnalysisTotal(getMonthAndYear,countYear,option)
+       // option = await getExamAnalysisTotal(getMonthAndYear,countYear,option)
      return option
     } catch (error) {
         throw error
@@ -105,7 +108,11 @@ async function getPaymentAnalysisTotal(getMonthAndYear, countYear,option) {
             .then((result) => {
                 let amount = 0
                 for(let p=0;p<result.length;p++){
+                  if(result[p].status == 'success')
+                   { 
+                   
                     amount = amount + result[p].totalAmount
+                  }
                 }
                 option[j].totalPayment = amount
           
@@ -138,7 +145,11 @@ async function getPaymentAnalysisTotal(getMonthAndYear, countYear,option) {
                   .then((result) => {
                     let amount = 0
                     for(let p=0;p<result.length;p++){
+                      if(result[p].status == 'success')
+                      { 
+                     
                         amount = amount + result[p].totalAmount
+                      }
                     }
                     option[option.length -1].totalPayment = amount
                     // option[option.length -1].totalPayment = result.length
@@ -166,6 +177,7 @@ async function getExamAnalysisTotal(getMonthAndYear, countYear,option) {
       if (getMonthAndYear.length > 12) {
         for (let i = 0, j = 0; i < getMonthAndYear.length; i = 12 + i, j++) {
           if (getMonthAndYear[i + 12] !== undefined) {
+            
             await exam
               .find({
                 createdAt: {
@@ -188,6 +200,7 @@ async function getExamAnalysisTotal(getMonthAndYear, countYear,option) {
                 index < getMonthAndYear.length % 12;
                 index++, minIndex--
               ) {
+             
                 if (
                   getMonthAndYear[getMonthAndYear.length - minIndex + 1] !==
                   undefined
@@ -209,6 +222,8 @@ async function getExamAnalysisTotal(getMonthAndYear, countYear,option) {
                       console.error("Error:", error);
                     });
                 }
+              
+
               }
             }
           }

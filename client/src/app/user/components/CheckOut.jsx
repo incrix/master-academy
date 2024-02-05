@@ -6,6 +6,7 @@ import useWindowDimensions from "../../../util/useWindowDimensions";
 import { useNavigate } from "react-router-dom";
 import Address from '../../../util/Address'
 import { callProfileUrl } from "../../../util/callImageUrl";
+import {domainName} from '../../../util/paymentServerName'
 export default function CheckOut() {
   const { width } = useWindowDimensions();
   const navigator = useNavigate();
@@ -191,7 +192,7 @@ function DTCheckOut({ user, details, width, address ,isChange,setChange }) {
                 <form
                   method="POST"
                   name="customerData"
-                  action="https://app.themastersacademy.in/payment/ccavRequestHandler"
+                  action={domainName}
                 >
                   <button
                     style={{
@@ -357,7 +358,7 @@ function MDCheckOut({ user, details,address ,isChange,setChange}) {
                 method="POST"
                 style={{ width: "100%", marginTop: "auto" }}
                 name="customerData"
-                action="https://app.themastersacademy.in/payment/ccavRequestHandler"
+                action={domainName}
               >
                 <button
                   style={{

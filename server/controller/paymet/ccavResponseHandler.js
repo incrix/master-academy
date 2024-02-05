@@ -8,7 +8,7 @@ exports.postRes = async function (request, response) {
 
   var ccavEncResponse = "",
     ccavResponse = "",
-    workingKey = process.env.CCAVENUE_WORK_KEY, //Put in the 32-Bit key shared by CCAvenues.
+    workingKey =  process.env.DEPLOYMENT == 'development' ?  process.env.CCAVENUE_WORK_KEY_DEV :  process.env.CCAVENUE_WORK_KEY_PRO, //Put in the 32-Bit key shared by CCAvenues.
     ccavPOST = "";
   
   request.on("data", function (data) {
@@ -22,7 +22,7 @@ exports.postRes = async function (request, response) {
     const check = qs.parse(ccavResponse);
     
     const payment = await Payment.findOne({_id:check.order_id})
-    
+    console.log(check);
     if (check.order_status == "Success") {
      
       await updatePlan(payment,check.order_id)
@@ -38,7 +38,7 @@ exports.postRes = async function (request, response) {
 
 const updatePlan = async (data,orderID) =>{
   try {
-      
+
       const user = await User.findOne({_id:data.userID})
       const payment = await Payment.findOne({_id:orderID})
       const goal = await Goal.findOne({userId:user._id,courseId:data.courseID})
@@ -57,7 +57,7 @@ const updatePlan = async (data,orderID) =>{
         payment.validTime = time
         payment.status = 'success'
         await payment.save()
-        invoiceEmail(user.email,payment)
+      //  invoiceEmail(user.email,payment)
        goal.plan = 'pro'
        goal.planValidDate = month
        goal.planValidTime = time

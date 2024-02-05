@@ -435,7 +435,7 @@ exports.createPracticesExam = async (req, res, next) => {
     else{
       res.json({
         status: "info",
-        message: "You have reached your limit",
+        message: "You have reached your limit. Upgrade for more Exams",
       });
     }
   } catch (error) {
@@ -584,7 +584,7 @@ exports.createMockExam = async (req, res, next) => {
     else
     res.json({
       status: "info",
-      message: "You have reached your limit",
+      message: "You have reached your limit. Upgrade for more Exams",
     });
   } catch (error) {
     throw error

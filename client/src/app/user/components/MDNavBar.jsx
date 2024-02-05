@@ -72,7 +72,7 @@ export default function MDNavBar({user,selectGoal,setSelectGoal,goal,isChange,ad
   
   <Stack direction='row' alignItems='center' gap='20px' >
  
- {/* { width > 600   ? selectGoal.plan == 'free' ?  <Button
+ { width > 600   ? selectGoal.plan == 'free' ?  <Button
             variant="contained"
             sx={{
               height:'35px',
@@ -87,7 +87,7 @@ export default function MDNavBar({user,selectGoal,setSelectGoal,goal,isChange,ad
             onClick={()=> navigete('/plan')}
           >
             Upgrade to PRO
-          </Button> :null : null } */}
+          </Button> :null : null }
          <Button
             d="basic-button"
             aria-controls={open ? "basic-menu" : undefined}

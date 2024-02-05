@@ -33,7 +33,7 @@ exports.getTotalPaymentAndExam = async (req, res) => {
     const year = indianTime.split(",")[0].split("/")[2];
     date.setDate(date.getDate() + 1); // plus day by 1 for getting actuel date  // 2023-01-01T18:30:00.000+05:30
     const getTotalAnalysis = await TotalPaymentAndExam(year, month);
-   
+
     res.json({ status: "success", getTotalAnalysis });
   } catch (error) {
     throw error;

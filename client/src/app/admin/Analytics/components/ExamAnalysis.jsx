@@ -33,6 +33,7 @@ ChartJS.register(
 );
 function ExamAnalysis({ examAnalysis, totalAnalysis }) {
   const [getdata, setData] = useState([]);
+  const [total,setTotal] = useState(0)
   const data = {
     labels: [
       "January",
@@ -50,7 +51,7 @@ function ExamAnalysis({ examAnalysis, totalAnalysis }) {
     ],
     datasets: [
       {
-        label: "My First Dataset",
+        label: "Exam",
         data: getdata.length > 0 ? getdata[0].data : examAnalysis[0].data,
         fill: false,
         borderColor: "#187163",
@@ -75,6 +76,19 @@ function ExamAnalysis({ examAnalysis, totalAnalysis }) {
       width: "100%",
     },
   };
+
+  useEffect(() =>{
+ if(getdata.length ==  0)
+ {
+  let total = 0 
+   examAnalysis[0].data.map(task => total = total + eval(task) )
+  setTotal(total)
+ }else{
+  let total = 0 
+  getdata[0].data.map(task => total = total + eval(task) )
+  setTotal(total)
+ }
+},[getdata])
 
   return (
     <div style={{ height: "50vh", width: "80%", display: "flex", gap: "10px" }}>
@@ -101,11 +115,13 @@ function ExamAnalysis({ examAnalysis, totalAnalysis }) {
           <ShowTotal
             limitYear={getdata[0].year}
             totalAnalysis={totalAnalysis}
+            totalExam ={total}
           />
         ) : (
           <ShowTotal
             limitYear={examAnalysis[0].year}
             totalAnalysis={totalAnalysis}
+            totalExam ={total}
           />
         )}
       </Paper>
@@ -113,7 +129,7 @@ function ExamAnalysis({ examAnalysis, totalAnalysis }) {
   );
 }
 
-function ShowTotal({ limitYear, totalAnalysis }) {
+function ShowTotal({ limitYear, totalAnalysis,totalExam }) {
   return totalAnalysis.map((task) => {
     if (task.year == limitYear) {
       return (
@@ -148,7 +164,7 @@ function ShowTotal({ limitYear, totalAnalysis }) {
           >
             <p style={{ color: "#187163" }}>Total Exam</p>
             <p style={{ color: "#FEA800", padding: "10px" }}>
-              {task.totalExam}
+              {totalExam}
             </p>
           </Paper>
         </Stack>

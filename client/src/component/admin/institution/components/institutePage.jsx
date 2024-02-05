@@ -313,10 +313,12 @@ const ActiveBatch = ({ institute }) => {
           <div
             className="scrollHide"
             style={{
-              padding: "20px",
+              padding: "10px",
               display: "flex",
-              gap: "20px",
-              height: "55vh",
+              flexWrap:'wrap',
+              gap: "10px",
+   overflow:'visible',
+             // height: "auto",
               width: "100%",
               overflowY: "scroll",
             }}
@@ -359,7 +361,7 @@ const Batch = ({ task }) => {
         height: "110px",
         borderRadius: "5px",
         background: "#FFF",
-        boxShadow: " 0px 15px 62px 0px rgba(0, 0, 0, 0.10)",
+        boxShadow: " 0px 5px 5px 2px rgba(0, 0, 0, 0.10)",
         cursor: "pointer",
         padding: "10px",
         display:'flex',
