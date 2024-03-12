@@ -74,7 +74,8 @@ exports.getHistory = async (req, res, next) => {
 
       if (batch.scheduleTest.length > 0) {
         for (let i = 0; i < batch.scheduleTest.length; i++) {
-          const isValueStatus = await isValidExamEnd(batch.scheduleTest[i]);
+          let isValueStatus
+          if(batch.scheduleTest[i].status == "pending") isValueStatus = await isValidExamEnd(batch.scheduleTest[i]);
           if (isValueStatus && batch.scheduleTest[i].status == "pending") {
             batch.scheduleTest[i].status = "complete";
             const {

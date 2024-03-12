@@ -7,3 +7,4 @@ exports.generateOtp = ()=>{
     
     return OTP
     }
+    
