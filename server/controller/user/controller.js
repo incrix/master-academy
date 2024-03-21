@@ -41,7 +41,7 @@ exports.login = async (req, res, next) => {
         req.session.examID = State.examID;
        return res.json({ status: "isExam",examID:State.examID });
       } else {
-        if (check.avatar == undefined || check.name == undefined || check.avatar == '') {
+        if (check.avatar == undefined || check.name == undefined || check.avatar == '' || check.name == '') {
           req.session.isCreate = true;
           req.session.checkPage = 'userDetails' 
           return res.json({ status: "userDetails" }) 

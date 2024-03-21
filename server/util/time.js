@@ -173,6 +173,7 @@ exports.getExamValid = (date, time) => {
 
 exports.analiysticsTime = (year, month, date) => {
   try {
+
     const currentDate = new Date(`${year} ${month} ${date}`);
     // Get the date string in ISO format without milliseconds and time zone offset
     let isoString = currentDate.toISOString().slice(0, -5);
