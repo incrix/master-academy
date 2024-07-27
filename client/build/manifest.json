@@ -1,6 +1,6 @@
 {
-  "short_name": "The Masters Academy",
-  "name": "The Masters Academy",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",

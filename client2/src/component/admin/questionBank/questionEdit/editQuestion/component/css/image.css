@@ -1,0 +1,39 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+ 
+  .parent {
+    width: 200px;
+    border-radius: 10px;
+    border: 2px solid #787486;
+    /* box-shadow: 7px 20px 20px rgb(210, 227, 244); */
+  }
+  .file-upload {
+    text-align: center;
+    /* border: 3px dashed rgb(210, 227, 244); */
+    padding: 1.5rem;
+    display: flex;
+    gap: 40px;
+    position: relative;
+    cursor: pointer;
+    align-items: center;
+  }
+
+  .file-upload input {
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .upload-image{
+    width: 20px;
+    height: 20px;
+  }
